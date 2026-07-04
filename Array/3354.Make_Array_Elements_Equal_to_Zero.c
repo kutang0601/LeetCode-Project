@@ -2,7 +2,8 @@
 
 //复杂度为o(nnm),简直是拉满了
 //所以接下来降复杂度
-int countValidSelections(int* nums, int numsSize) {
+int countValidSelections(int* nums, int numsSize) 
+{
 
     int count1 = 0;
     int count2 = 0;
@@ -108,4 +109,38 @@ int countValidSelections(int* nums, int numsSize) {
     return count;
 }
 
-//
+//使用前缀和来解决，复杂度将降为o(n)
+int countValidSelections(int* nums, int numsSize) 
+{
+    int count = 0;
+
+    int pre[100] = {0};
+    int sum = 0;
+
+    //存储前缀和
+    for (int a = 0; a < numsSize; a++)
+    {
+        sum += nums[a];
+        pre[a] = sum;
+    }
+
+    for (int b = 0; b < numsSize; b++)
+    {
+        int before = 0;
+        int back = 0;
+
+        if (nums[b] == 0)
+        {
+            before = pre[b];
+            back = pre[numsSize - 1] - pre[b];
+
+            //如果0前比0后大1，或者0后比0前大1，那么需要先从左或右加一刚刚好
+            if (before - back == 1 || back - before == 1)
+                count++;
+            else if (before == back)//如果相等先向左或者向右都能成功
+                count += 2;
+        }
+    }
+
+    return count;
+}
