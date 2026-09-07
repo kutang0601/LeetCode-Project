@@ -6,49 +6,71 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+//先寻找中间节点，然后反转链表，最后前一个后一个合并链表
+//时间复杂度：O(n)
 class Solution 
 {
     public:
         void reorderList(ListNode* head) 
         {
-            if (head == nullptr || head->next == nullptr)
+            //两个及以下不需要处理
+            if (!head || !head->next || !head->next->next)
+            {
                 return;
+            }
 
-            ListNode* slow = head;
-            ListNode* fast = head;
-
-            while (fast->next != nullptr && fast->next->next != nullptr)
+            //寻找中间节点
+            struct ListNode* fast = head;
+            struct ListNode* slow = head;
+            struct ListNode* prev = nullptr;
+            while (fast != nullptr && fast->next != nullptr)
             {
-                slow = slow->next;
                 fast = fast->next->next;
+                prev = slow;
+                slow = slow->next;
             }
 
-            ListNode* second = slow->next;
-            slow->next = nullptr;
+            prev->next = nullptr;
 
-            ListNode* prev = nullptr;
-            while (second != nullptr)
+            //从中间节点开始反转链表
+            struct ListNode* phead = nullptr;
+            struct ListNode* pcur = slow;
+            struct ListNode* ptail = slow->next;
+            while (ptail)
             {
-                ListNode* next = second->next;
-                second->next = prev;
-                prev = second;
-                second = next;
+                pcur->next = phead;
+                phead = pcur;
+                pcur = ptail;
+                ptail = ptail->next;
             }
+            pcur->next = phead;
 
-            second = prev;
+            struct ListNode* plist = head;
+            head = head->next;
 
-            ListNode* first = head;
-
-            while (second != nullptr)
+            //合并链表
+            while (head)
             {
-                ListNode* nextFirst = first->next;
-                ListNode* nextSecond = second->next;
+                struct ListNode* temp1 = pcur->next;
+                struct ListNode* temp2 = head->next;
 
-                first->next = second;
-                second->next = nextFirst;
+                plist->next = pcur;
+                plist->next->next = head;
 
-                first = nextFirst;
-                second = nextSecond;
+                pcur = temp1;
+                head = temp2;
+
+                plist = plist->next->next;
             }
+
+            while (pcur)
+            {
+                struct ListNode* temp = pcur->next;
+                plist->next = pcur;
+                pcur = temp;
+                plist = plist->next;
+            }
+
+            return;
         }
 };
