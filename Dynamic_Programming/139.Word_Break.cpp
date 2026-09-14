@@ -1,32 +1,46 @@
-#include <unordered_set>
 #include <vector>
 #include <string>
 
+//动态规划
+//定义dp代表第n个位置能否到达
+//时间复杂度：O()
 class Solution 
 {
     public:
         bool wordBreak(std::string s, std::vector<std::string>& wordDict) 
         {
-            std::pmr::unordered_set<std::string> dict(wordDict.begin(), wordDict.end());
-
-            int n = s.size();
-
-            std::vector<bool> dp(n + 1, false);
+            std::vector<bool> dp(s.size() + 1, false);
 
             dp[0] = true;
 
-            for (int i = 1; i <= n; i++)
+            //从第一个字符开始判断
+            for (int n = 1; n < s.size() + 1; n++)
             {
-                for (int j = 0; j < i; j++)
+                //每次都分割看是否能够构成新的单词
+                for (int m = 0; m < n; m++)
                 {
-                    if (dp[j] && dict.count(s.substr(j, i - j)))
+                    //如果已经构成了单词则跳过
+                    if (!dp[m])
+                        continue;
+
+                    std::string temp;
+                    temp.append(s, m, n - m);
+
+                    //循环遍历，在字典中寻找
+                    for (auto it : wordDict)
                     {
-                        dp[i] = true;
-                        break;
+                        if (temp == it)
+                        {
+                            dp[n] = true;
+                            break;
+                        }
                     }
+
+                    if (dp[n])
+                        break;
                 }
             }
 
-            return dp[n];
+            return dp.back();
         }
 };
