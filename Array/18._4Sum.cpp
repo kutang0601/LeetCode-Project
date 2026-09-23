@@ -1,68 +1,58 @@
 #include <algorithm>
 #include <vector>
 
+//排序后，先确定双层循环遍历，确定两个值的和，在使用双指针，在剩下的寻找
+//时间复杂度：O(n ^ 2 * k + n ^ 3)
 class Solution
 {
     public:
         std::vector<std::vector<int>> fourSum(std::vector<int>& nums, int target)
         {
             std::vector<std::vector<int>> ret;
-            int n = nums.size();
 
             std::sort(nums.begin(), nums.end());
 
-            for (int i = 0; i < n - 3; i++)
+            for (int i = 0; i < nums.size() - 1; i++)
             {
-                if (i > 0 && nums[i] == nums[i - 1])
+                for (int m = i + 1; m < nums.size(); m++)
                 {
-                    continue;
-                }
+                    std::vector<int> temp;
 
-                for (int j = i + 1; j < n - 2; j++)
-                {
-                    if (j > i + 1 && nums[j] == nums[j - 1])
+                    temp.push_back(nums[i]);
+                    temp.push_back(nums[m]);
+
+                    long long sum = (long long)target - nums[i] - nums[m];
+
+                    int left = m + 1;
+                    int right = nums.size() - 1;
+
+                    while (right > left)
                     {
-                        continue;
-                    }
-
-                    int left = j + 1;
-                    int right = n - 1;
-
-                    while (left < right)
-                    {
-                        long long sum = (long long)nums[i]
-                                    + nums[j]
-                                    + nums[left]
-                                    + nums[right];
-
-                        if (sum == target)
+                        if (nums[left] + nums[right] == sum)
                         {
-                            ret.push_back(
-                                {nums[i], nums[j], nums[left], nums[right]}
-                            );
+                            temp.push_back(nums[left]);
+                            temp.push_back(nums[right]);
 
-                            while (left < right &&
-                                nums[left] == nums[left + 1])
+                            auto it = std::find(ret.begin(), ret.end(), temp);
+
+                            if (it == ret.end())
                             {
-                                left++;
+                                ret.push_back(temp);
                             }
 
-                            while (left < right &&
-                                nums[right] == nums[right - 1])
-                            {
-                                right--;
-                            }
+                            temp.pop_back();
+                            temp.pop_back();
 
                             left++;
                             right--;
                         }
-                        else if (sum < target)
+                        else if (nums[left] + nums[right] > sum)
                         {
-                            left++;
+                            right--;
                         }
                         else
                         {
-                            right--;
+                            left++;
                         }
                     }
                 }
