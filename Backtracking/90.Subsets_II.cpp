@@ -1,35 +1,35 @@
 #include <algorithm>
 #include <vector>
 
-class Solution
+class Solution 
 {
     public:
         std::vector<std::vector<int>> ret;
-        std::vector<int> path;
+        std::vector<int> part;
 
-        void backtracking(std::vector<int>& nums, int start)
+        void backtrace(std::vector<int>& nums, int start)
         {
-            ret.push_back(path);
+            ret.push_back(part);
 
-            for (int i = start; i < nums.size(); i++)
+            for (int n = start; n < nums.size(); n++)
             {
-                // 同一层去重
-                if (i > start && nums[i] == nums[i - 1])
-                    continue;
+                part.push_back(nums[n]);
 
-                path.push_back(nums[i]);
+                backtrace(nums, n + 1);
 
-                backtracking(nums, i + 1);
+                while (n < nums.size() - 1 && nums[n] == nums[n + 1])
+                {
+                    n++;
+                }
 
-                path.pop_back();
+                part.pop_back();
             }
         }
 
-        std::vector<std::vector<int>> subsetsWithDup(std::vector<int>& nums)
-        {
+        std::vector<std::vector<int>> subsetsWithDup(std::vector<int>& nums) {
             std::sort(nums.begin(), nums.end());
 
-            backtracking(nums, 0);
+            backtrace(nums, 0);
 
             return ret;
         }
