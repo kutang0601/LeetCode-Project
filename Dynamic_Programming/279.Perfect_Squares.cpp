@@ -1,8 +1,13 @@
 #include <algorithm>
 #include <vector>
+
+//从 1 到 n 遍历的同时并且判断是否是完全平方数，如果是加入count
+//然后每次都遍历现有的count来寻找最小的组成数
+//时间复杂度：O(n * n ^ (1 / 2))
 class Solution 
 {
     public:
+        //二分查找判断是否是完全平方数
         bool isPerfectSquare(long long n) 
         {
             long long left = 0;

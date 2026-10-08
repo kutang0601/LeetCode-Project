@@ -7,6 +7,8 @@ struct ListNode
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+//偶节点添加到一个链表，奇节点添加到一个链表，偶节点的头和奇节点的尾相连，并且将尾节点的 next 置空
+//时间复杂度：O(n) 
 class Solution 
 {
     public:
