@@ -7,32 +7,58 @@ struct ListNode
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-
 class Solution 
 {
     public:
         ListNode* oddEvenList(ListNode* head) 
         {
-            if (head == nullptr || head->next == nullptr)
+            if (!head || !head->next)
                 return head;
 
-            ListNode* odd = head;
-            ListNode* even = head->next;
-            ListNode* evenHead = even;
+            ListNode* newhead = nullptr;
+            ListNode* newtail = nullptr;
 
+            ListNode* phead = nullptr;
+            ListNode* ptail = nullptr;
 
-            while (even != nullptr && even->next != nullptr)
+            int count = 1;
+
+            while (head)
             {
-                odd->next = even->next;
-                odd = odd->next;
+                if (count % 2 == 1)
+                {
+                    if (!newhead)
+                    {
+                        newhead = head;
+                        phead = head;
+                    }
+                    else 
+                    {
+                        phead->next = head;
+                        phead = phead->next;
+                    }                
+                }
+                else
+                {
+                    if (!newtail)
+                    {
+                        newtail = head;
+                        ptail = head;
+                    }
+                    else 
+                    {
+                        ptail->next = head;
+                        ptail = ptail->next;
+                    }
+                }
 
-                even->next = odd->next;
-                even = even->next;
+                count++;
+                head = head->next;
             }
 
+            phead->next = newtail;
+            ptail->next = nullptr;
 
-            odd->next = evenHead;
-
-            return head;
+            return newhead;
         }
 };
