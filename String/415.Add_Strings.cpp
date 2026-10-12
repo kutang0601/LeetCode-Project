@@ -9,32 +9,47 @@ class Solution
         {
             std::string ret;
 
-            int i = num1.size() - 1;
-            int j = num2.size() - 1;
-            int carry = 0;
+            int n1 = num1.size() - 1;
+            int n2 = num2.size() - 1;
 
-            while (i >= 0 || j >= 0 || carry > 0)
+            int count = 0;
+
+            while (n1 >= 0 && n2 >= 0)
             {
-                int a = 0;
-                int b = 0;
+                int sum = (num1[n1] - '0') + (num2[n2] - '0') + count;
 
-                if (i >= 0)
-                {
-                    a = num1[i] - '0';
-                    i--;
-                }
+                count = sum / 10;
 
-                if (j >= 0)
-                {
-                    b = num2[j] - '0';
-                    j--;
-                }
+                ret.push_back((sum % 10) + '0');
 
-                int sum = a + b + carry;
-
-                ret.push_back(sum % 10 + '0');
-                carry = sum / 10;
+                n1--;
+                n2--;
             }
+
+            while (n1 >= 0)
+            {
+                int sum = (num1[n1] - '0') + count;
+
+                count = sum / 10;
+
+                ret.push_back((sum % 10) + '0');
+
+                n1--;
+            }
+
+            while (n2 >= 0)
+            {
+                int sum = (num2[n2] - '0') + count;
+
+                count = sum / 10;
+
+                ret.push_back((sum % 10) + '0');
+
+                n2--;
+            }
+
+            if (count > 0)
+                ret.push_back(count + '0');
 
             std::reverse(ret.begin(), ret.end());
 
