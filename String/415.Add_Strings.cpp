@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <string>
 
+//从后往前遍历，count记录进位，最后反转
+//时间复杂度：O(n * m)
 class Solution 
 {
     public:
