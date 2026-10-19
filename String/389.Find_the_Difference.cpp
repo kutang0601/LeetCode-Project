@@ -1,6 +1,8 @@
 #include <string>
 #include <unordered_map>
 
+//使用哈希图，一个存字符，一个存出现次数，遍历两次，一次统计，一次删除就可以
+//时间复杂度：O(n^2)
 class Solution 
 {
     public:
