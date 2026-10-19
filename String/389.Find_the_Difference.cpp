@@ -1,22 +1,47 @@
 #include <string>
+#include <unordered_map>
 
 class Solution 
 {
     public:
         char findTheDifference(std::string s, std::string t) 
         {
-            char ret = 0;
+            std::unordered_map<char, int> judge;
 
-            for (int i = 0; i < s.size(); i++)
+            for (auto& it : s)
             {
-                ret ^= s[i];
+                auto ch = judge.find(it);
+                
+                if (ch != judge.end())
+                {
+                    judge[it]++;
+                }
+                else
+                {
+                    judge[it] = 1;
+                }
             }
 
-            for (int i = 0; i < t.size(); i++)
+            for (auto& it : t)
             {
-                ret ^= t[i];
+                auto ch = judge.find(it);
+                
+                if (ch != judge.end())
+                {
+                    judge[it]--;
+                }
+                else
+                {
+                    judge[it] = -1;
+                }
             }
 
-            return ret;
+            for (const auto& [k, v]: judge)
+            {
+                if (v == -1)
+                    return k;
+            }
+
+            return 0;
         }
 };
