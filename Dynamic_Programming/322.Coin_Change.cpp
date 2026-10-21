@@ -1,29 +1,33 @@
 #include <vector>
 #include <algorithm>
 
-class Solution
+//dp[i]表示i元需要最少多少硬币兑换
+//时间复杂度：O(amount * n)
+class Solution 
 {
-    public:
-        int coinChange(std::vector<int>& coins, int amount)
+public:
+    int coinChange(std::vector<int>& coins, int amount) 
+    {
+        std::vector<int> dp(amount + 1, amount + 1);
+
+        dp[0] = 0;
+
+        for (int n = 1; n < amount + 1; n++)
         {
-            std::vector<int> dp(amount + 1, amount + 1);
-
-            dp[0] = 0;
-
-            for (int i = 1; i <= amount; i++)
+            for (int m = 0; m < coins.size(); m++)
             {
-                for (int j = 0; j < coins.size(); j++)
+                if (n >= coins[m])
                 {
-                    if (i >= coins[j])
-                    {
-                        dp[i] = std::min(dp[i], dp[i - coins[j]] + 1);
-                    }
+                    dp[n] = std::min(dp[n], dp[n - coins[m]] + 1);
                 }
             }
-
-            if (dp[amount] == amount + 1)
-                return -1;
-
-            return dp[amount];
         }
+
+        if (dp[amount] == amount + 1)
+        {
+            return -1;
+        }
+
+        return dp.back();
+    }
 };
