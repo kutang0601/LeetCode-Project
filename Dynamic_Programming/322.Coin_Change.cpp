@@ -1,7 +1,7 @@
 #include <vector>
 #include <algorithm>
 
-//dp[i]表示i元需要最少多少硬币兑换
+//dp[i]表示i元需要最少多少硬币兑换，从 0 -> amount 遍历，从每种可能中选择最小的结果
 //时间复杂度：O(amount * n)
 class Solution 
 {
@@ -23,7 +23,7 @@ public:
             }
         }
 
-        if (dp[amount] == amount + 1)
+        if (dp.back() == amount + 1)
         {
             return -1;
         }
