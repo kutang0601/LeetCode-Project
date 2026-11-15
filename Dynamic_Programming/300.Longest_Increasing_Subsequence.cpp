@@ -2,6 +2,7 @@
 #include <algorithm>
 
 //动态规划，定义dp[i]为以i结尾，能够达到的最长递增子序列
+//时间复杂度：O(n ^ 2)
 class Solution
 {
 public:
